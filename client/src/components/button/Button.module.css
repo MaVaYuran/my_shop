@@ -1,0 +1,23 @@
+.button {
+  margin-top: 24px;
+  margin-right: 20px;
+  background-color: transparent;
+  border: transparent;
+  border-bottom: 1px solid #888;
+  outline: none;
+  padding: 6px 2px;
+  font-family: inherit;
+  font-size: inherit;
+  color: #766;
+  transition:
+    backgound-color 0.4s ease,
+    color 0.4s ease,
+    border 0.4s ease;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: #eee;
+  color: #655;
+  border: transparent;
+}
