@@ -1,9 +1,15 @@
 import { applyMiddleware, combineReducers, legacy_createStore } from 'redux';
-import { UserReducer } from '../reducers/userReducer';
+import { authReducer } from '../reducers/authReducer';
 import { withExtraArgument } from 'redux-thunk';
+import { cartReducer } from '../reducers/cartReducer';
+import { productReducer } from '../reducers/productReducer';
+import { categoryReducer } from '../reducers/categoryReducer';
 
 const rootReducer = combineReducers({
-  users: UserReducer,
+  auth: authReducer,
+  cart: cartReducer,
+  product: productReducer,
+  category: categoryReducer,
 });
 
 export const createStore = navigate => {

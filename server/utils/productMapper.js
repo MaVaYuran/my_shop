@@ -1,6 +1,6 @@
 export function mapProduct(product) {
   return {
-    id: product.id,
+    id: product._id,
     title: product.title,
     description: product.description,
     image: product.image,

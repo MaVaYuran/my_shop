@@ -21,3 +21,7 @@
   color: #655;
   border: transparent;
 }
+
+.active {
+  opacity: 0.8;
+}

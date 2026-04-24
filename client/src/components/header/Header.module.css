@@ -13,3 +13,7 @@ a {
   color: white;
   margin-left: 10px;
 }
+.headerContainer {
+  display: flex;
+  gap: 12px;
+}

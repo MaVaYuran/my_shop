@@ -7,8 +7,10 @@ import { Button } from '../components/button/Button';
 import { Header } from '../components/header/Header';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { login } from '../actions/authActions';
+import { useNavigate } from 'react-router';
 
-const formSchema = yup.object().shape({
+const registerSchema = yup.object().shape({
   email: yup.string().email().required('Обязательное поле'),
   password: yup
     .string()
@@ -19,10 +21,25 @@ const formSchema = yup.object().shape({
     .string()
     .required('Обязательное поле')
     .oneOf([yup.ref('password'), null], 'Пароли не совпадают'),
-  name: yup.string().min(3, 'Минимум 3 символa').max(20, 'Максимум 20 символов'),
+  name: yup
+    .string()
+    .required('Обязательное поле')
+    .min(3, 'Минимум 3 символa')
+    .max(20, 'Максимум 20 символов'),
+});
+
+const loginSchema = yup.object().shape({
+  email: yup.string().email().required('Обязательное поле'),
+  password: yup
+    .string()
+    .required('Обязательное поле')
+    .min(6, 'Минимум 6 символов')
+    .max(16, 'Максимум 16 символов'),
 });
 
 export const Auth = ({ isRegister }) => {
+  const navigate = useNavigate();
+  const schema = isRegister ? registerSchema : loginSchema;
   const {
     handleSubmit,
     register,
@@ -30,13 +47,27 @@ export const Auth = ({ isRegister }) => {
     formState: { errors },
   } = useForm({
     defaultValues: { email: '', password: '', passcheck: '', name: '' },
-    resolver: yupResolver(formSchema),
+    resolver: yupResolver(schema),
   });
 
   const [serverError, setServerError] = useState(null);
   const dispatch = useDispatch();
 
-  const onSubmit = {};
+  const onSubmit = async data => {
+    const { passcheck, ...submitData } = data;
+    setServerError(null);
+    try {
+      if (isRegister) {
+        console.log('Form data', submitData);
+        await dispatch(register(submitData));
+      } else {
+        await dispatch(login(data.email, data.password));
+      }
+      navigate('/');
+    } catch (e) {
+      setServerError('Ошибка регистрации/авторизации');
+    }
+  };
   return (
     <>
       <Header />
@@ -47,35 +78,39 @@ export const Auth = ({ isRegister }) => {
             <Input
               type="email"
               label="Email"
-              value="email"
               placeholder="Введите адрес почты..."
               {...register('email')}
             />
+            {errors.email && <span className={styles.error}>{errors.email.message}</span>}
             <Input
               type="password"
               label="Password"
-              value="password"
               placeholder="Введите пароль..."
               {...register('password')}
             />
+            {errors.password && <span className={styles.error}>{errors.password.message}</span>}
+
             {isRegister && (
-              <Input
-                type="password"
-                label="Password"
-                value="passcheck"
-                placeholder="Повторите пароль..."
-                {...register('passcheck')}
-              />
+              <>
+                <Input
+                  type="password"
+                  label="Password"
+                  placeholder="Повторите пароль..."
+                  {...register('passcheck')}
+                />
+                {errors.passcheck && (
+                  <span className={styles.error}>{errors.passcheck.message}</span>
+                )}
+                <Input
+                  type="text"
+                  label="Name"
+                  placeholder="Введите имя..."
+                  {...register('name')}
+                />
+                {errors.name && <span className={styles.error}>{errors.name.message}</span>}
+              </>
             )}
-            {isRegister && (
-              <Input
-                type="text"
-                label="Name"
-                value="name"
-                placeholder="Введите имя..."
-                {...register('name')}
-              />
-            )}
+            {serverError && <div className={styles.serverError}>{serverError} </div>}
             <Button type="submit" title={isRegister ? 'Зарегистрироваться' : 'Войти'} />
           </form>
         </div>

@@ -21,7 +21,7 @@ export const routeConfig = [
     element: <CustomerPage />,
     roles: [roles.ADMIN, roles.CUSTOMER],
   },
-  { path: '/users/:id/cart', element: <Cart />, roles: [roles.CUSTOMER] },
+  { path: '/cart', element: <Cart />, roles: [roles.CUSTOMER] },
 ];
 
 export const buildingRoutes = routeConfig => {

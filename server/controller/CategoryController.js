@@ -1,9 +1,10 @@
 import { getCategories, add, deleteById } from '../service/CategoryService.js';
+import { mapCategory } from '../utils/categoryMapper.js';
 
 async function getAll(req, res) {
   try {
     const categories = await getCategories();
-    res.status(200).json({ error: null, data: categories });
+    res.status(200).json({ error: null, data: categories.map(mapCategory) });
   } catch (e) {
     res.status(500).json({ error: e.message || 'Unknown error' });
   }

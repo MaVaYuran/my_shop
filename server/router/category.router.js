@@ -5,7 +5,7 @@ import roles from '../constants/roles.js';
 import { hasRole } from '../middlewares/hasRole.js';
 
 const router = Router();
-router.get('/', authenticate, hasRole([roles.ADMIN]), getAll);
+router.get('/', getAll);
 router.post('/new', authenticate, hasRole([roles.ADMIN]), addCategory);
 router.delete('/:id', authenticate, hasRole([roles.ADMIN]), deleteCategory);
 
