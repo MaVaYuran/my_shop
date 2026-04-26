@@ -19,7 +19,6 @@ const ProductSchema = Schema(
     },
     stock: {
       type: Number,
-      required: true,
       min: 0,
       default: 50,
     },

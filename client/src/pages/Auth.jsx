@@ -5,9 +5,8 @@ import * as yup from 'yup';
 import styles from './Auth.module.css';
 import { Button } from '../components/button/Button';
 import { Header } from '../components/header/Header';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from '../actions/authActions';
+import { login, userRegister } from '../actions/authActions';
 import { useNavigate } from 'react-router';
 
 const registerSchema = yup.object().shape({
@@ -43,29 +42,29 @@ export const Auth = ({ isRegister }) => {
   const {
     handleSubmit,
     register,
-    reset,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: { email: '', password: '', passcheck: '', name: '' },
     resolver: yupResolver(schema),
   });
 
-  const [serverError, setServerError] = useState(null);
   const dispatch = useDispatch();
 
   const onSubmit = async data => {
-    const { passcheck, ...submitData } = data;
-    setServerError(null);
+    setError(null);
     try {
       if (isRegister) {
-        console.log('Form data', submitData);
-        await dispatch(register(submitData));
+        await dispatch(userRegister(data.email, data.password, data.name));
       } else {
         await dispatch(login(data.email, data.password));
       }
       navigate('/');
-    } catch (e) {
-      setServerError('Ошибка регистрации/авторизации');
+    } catch (error) {
+      setError('root', {
+        type: 'server',
+        message: error.message || 'Ошибка регистрации/авторизации',
+      });
     }
   };
   return (
@@ -110,7 +109,7 @@ export const Auth = ({ isRegister }) => {
                 {errors.name && <span className={styles.error}>{errors.name.message}</span>}
               </>
             )}
-            {serverError && <div className={styles.serverError}>{serverError} </div>}
+            {errors.root && <div className={styles.serverError}>{errors.root.message} </div>}
             <Button type="submit" title={isRegister ? 'Зарегистрироваться' : 'Войти'} />
           </form>
         </div>

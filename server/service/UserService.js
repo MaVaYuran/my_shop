@@ -9,14 +9,6 @@ async function getAllUsers() {
   }
 }
 
-async function getUserById(id) {
-  try {
-    return await User.findById(id);
-  } catch (e) {
-    throw new Error(e.message);
-  }
-}
-
 async function editUser(id, dto) {
   try {
     const user = await User.findById(id);
@@ -41,4 +33,4 @@ async function removeUser(id) {
   }
 }
 
-export { getAllUsers, getUserById, editUser, removeUser };
+export { getAllUsers, editUser, removeUser };

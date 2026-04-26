@@ -53,7 +53,7 @@ async function editProduct(id, dto) {
     if (!product) {
       throw new Error('Product not found');
     }
-    const updatedProduct = await Product.findByIdAndUpdate(id, dto, { new: true });
+    const updatedProduct = await Product.findByIdAndUpdate(id, dto, { returnDocument: 'after' });
     return updatedProduct;
   } catch (e) {
     throw new Error(e.message);

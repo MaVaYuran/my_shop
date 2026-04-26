@@ -17,3 +17,6 @@ a {
   display: flex;
   gap: 12px;
 }
+.logout:hover {
+  cursor: pointer;
+}

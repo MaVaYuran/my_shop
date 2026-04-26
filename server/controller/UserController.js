@@ -1,4 +1,4 @@
-import { getAllUsers, getUserById, editUser, removeUser } from '../service/UserService.js';
+import { getAllUsers, editUser, removeUser } from '../service/UserService.js';
 
 async function getAll(req, res) {
   try {
@@ -10,14 +10,6 @@ async function getAll(req, res) {
   }
 }
 
-async function getById(req, res) {
-  try {
-    const user = await getUserById(req.params.id);
-    res.status(201).json({ error: null, data: user });
-  } catch (e) {
-    res.status(500).json({ message: e.message });
-  }
-}
 async function edit(req, res) {
   try {
     const updatedUser = await editUser(req.params.id, req.body);
@@ -35,4 +27,4 @@ async function remove(req, res) {
   }
 }
 
-export { getAll, getById, edit, remove };
+export { getAll, edit, remove };

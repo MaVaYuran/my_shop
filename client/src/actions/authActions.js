@@ -36,10 +36,10 @@ export const loginFailure = error => ({
 
 export const logout = () => ({ type: LOGOUT });
 
-export const register = userData => async dispatch => {
+export const userRegister = (email, password, name) => async dispatch => {
   dispatch(registerRequest());
   try {
-    const response = await request('/register', 'POST', userData);
+    const response = await request('/register', 'POST', { email, password, name });
     console.log('response', response);
 
     dispatch(registerSuccess(response));
@@ -66,9 +66,9 @@ export const login = (email, password) => async dispatch => {
   }
 };
 
-export const logoutUser = () => async dispatch => {
+export const logoutUser = () => {
   localStorage.removeItem('token');
-  dispatch(logout());
+  return logout();
 };
 
 export const restoreSession = () => async dispatch => {

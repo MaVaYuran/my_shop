@@ -3,7 +3,7 @@ import styles from './Header.module.css';
 import { NavLink } from 'react-router';
 import { Logo } from './logo/Logo';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../actions/authActions';
+import { logoutUser } from '../../actions/authActions';
 import { Button } from '../button/Button';
 import { HiOutlineShoppingCart } from 'react-icons/hi';
 import roles from '../../constants/roles';
@@ -11,18 +11,16 @@ import roles from '../../constants/roles';
 export const Header = () => {
   const { isAuthenticated, user, token } = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  let name = null;
-  let role = null;
-  if (user !== null) {
-    name = user.name;
-    role = user.role;
-  }
+
+  const name = user.name;
+  const role = user.role;
+
   console.log('TOken', token);
   console.log('isAuthntic', isAuthenticated);
   console.log('user', user);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
   };
 
   return (
@@ -38,7 +36,9 @@ export const Header = () => {
                 <HiOutlineShoppingCart />
               </NavLink>
             )}
-            <span onClick={handleLogout}>Logout</span>
+            <span className={styles.logout} onClick={handleLogout}>
+              Logout
+            </span>
             <span>Hello, {name}</span>
           </div>
         ) : (

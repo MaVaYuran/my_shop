@@ -79,7 +79,7 @@ export const addCategory = title => async dispatch => {
 export const deleteCategory = id => async dispatch => {
   dispatch(deleteCategoryRequest());
   try {
-    await request(`/category/${id}`);
+    await request(`/category/${id}`, 'DELETE');
     dispatch(deleteCategorySuccess(id));
   } catch (error) {
     dispatch(deleteCategoryFailure(error.message));

@@ -3,5 +3,5 @@ export * from './Auth.jsx';
 export * from './Admin.jsx';
 export * from './Product.jsx';
 export * from './CustomerPage.jsx';
-export * from './Shop.jsx';
+export * from './shop/ShopLayout.jsx';
 export * from './ProductEdit.jsx';

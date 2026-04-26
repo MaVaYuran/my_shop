@@ -1,4 +1,4 @@
-import { Auth, CustomerPage, Cart, Product, Admin, Shop, ProductEdit } from '../pages';
+import { Auth, CustomerPage, Cart, Product, Admin, ShopLayout, ProductEdit } from '../pages';
 
 import roles from '../constants/roles';
 import { wrappedRoutes } from './wrappedRoutes';
@@ -6,7 +6,7 @@ import { wrappedRoutes } from './wrappedRoutes';
 export const routeConfig = [
   {
     path: '/',
-    element: <Shop />,
+    element: <ShopLayout />,
   },
   { path: '/register', element: <Auth isRegister={true} /> },
   { path: '/login', element: <Auth isRegister={false} /> },

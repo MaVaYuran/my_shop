@@ -20,11 +20,12 @@ async function add(title) {
 
 async function deleteById(id) {
   try {
-    const category = await Category.findByIdAndDelete(id);
+    const category = await Category.findById(id);
 
     if (!category) {
       throw new Error('Группа товаров не найдена');
     }
+    await Category.findByIdAndDelete(id);
   } catch (e) {
     console.log(e);
 

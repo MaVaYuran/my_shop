@@ -18,7 +18,7 @@ const UserSchema = Schema(
     },
     role: {
       type: Number,
-      default: roles.ADMIN,
+      default: roles.CUSTOMER,
       enum: [roles.ADMIN, roles.CUSTOMER],
     },
   },
