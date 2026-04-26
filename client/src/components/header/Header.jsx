@@ -11,10 +11,12 @@ import roles from '../../constants/roles';
 export const Header = () => {
   const { isAuthenticated, user, token } = useSelector(state => state.auth);
   const dispatch = useDispatch();
-
-  const name = user.name;
-  const role = user.role;
-
+  let name = null;
+  let role = null;
+  if (user !== null) {
+    name = user.name;
+    role = user.role;
+  }
   console.log('TOken', token);
   console.log('isAuthntic', isAuthenticated);
   console.log('user', user);

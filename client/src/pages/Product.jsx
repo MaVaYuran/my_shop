@@ -11,10 +11,14 @@ export const Product = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { selectedProduct, loading, error } = useSelector(state => state.products);
-  const { role } = useSelector(state => state.auth.user);
+  const { user } = useSelector(state => state.auth);
   const categories = useSelector(state => state.category.categories);
   const [isEditing, setIsEditing] = useState(false);
   console.log('product categ', categories);
+  let role = null;
+  if (user !== null) {
+    role = user.role;
+  }
 
   useEffect(() => {
     if (id) {
