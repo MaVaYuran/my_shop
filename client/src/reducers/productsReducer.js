@@ -106,7 +106,7 @@ export const productsReducer = (state = initialProductState, { type, payload }) 
       return {
         ...state,
         loading: false,
-        porducts: state.products.map(product => (product.id === payload.id ? payload : product)),
+        products: state.products.map(product => (product.id === payload.id ? payload : product)),
       };
     }
     case UPDATE_PRODUCT_FAILURE: {

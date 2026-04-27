@@ -1,4 +1,4 @@
-import { Auth, CustomerPage, Cart, Product, Admin, ShopLayout, ProductEdit } from '../pages';
+import { Auth, CustomerPage, Cart, Product, Admin, ShopLayout, ProductForm } from '../pages';
 
 import roles from '../constants/roles';
 import { wrappedRoutes } from './wrappedRoutes';
@@ -14,7 +14,7 @@ export const routeConfig = [
   {
     path: '/products/:id',
     element: <Product />,
-    children: [{ path: 'edit', element: <ProductEdit />, roles: [roles.ADMIN] }],
+    children: [{ path: 'edit', element: <ProductForm />, roles: [roles.ADMIN] }],
   },
   {
     path: '/users/:id',

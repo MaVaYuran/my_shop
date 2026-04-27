@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Input } from '../components/input/Input';
 import { Button } from '../components/button/Button';
 import { useEffect, useState } from 'react';
-import { addProduct, updateProduct } from '../actions/productsActions';
+import { addProduct, fetchProducts, updateProduct } from '../actions/productsActions';
 import { useDispatch } from 'react-redux';
 import styles from './Product.module.css';
 import { useNavigate } from 'react-router';
@@ -28,7 +28,7 @@ const productSchema = yup.object().shape({
   categories: yup.string().required(),
 });
 
-const ProductForm = ({ categories = [], initialData = null }) => {
+export const ProductForm = ({ categories = [], initialData = null, setIsEditing }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,7 +81,8 @@ const ProductForm = ({ categories = [], initialData = null }) => {
             },
           }),
         );
-        navigate('/');
+        setIsEditing(false);
+        navigate(`/`);
       } else {
         await dispatch(
           addProduct({
@@ -169,5 +170,3 @@ const ProductForm = ({ categories = [], initialData = null }) => {
     </form>
   );
 };
-
-export default ProductForm;

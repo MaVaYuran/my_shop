@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useParams } from 'react-router';
+import { Link, Outlet, useParams } from 'react-router';
 import { getProduct } from '../actions/productsActions';
 import roles from '../constants/roles';
 import { Button } from '../components/button/Button';
-import ProductForm from './ProductForm';
+import { ProductForm } from './ProductForm';
 import { Header } from '../components/header/Header';
 
 export const Product = () => {
@@ -14,7 +14,7 @@ export const Product = () => {
   const { user } = useSelector(state => state.auth);
   const categories = useSelector(state => state.category.categories);
   const [isEditing, setIsEditing] = useState(false);
-  console.log('product categ', categories);
+
   let role = null;
   if (user !== null) {
     role = user.role;
@@ -41,21 +41,33 @@ export const Product = () => {
       )}
       {!isEditing ? (
         <>
-          <h2>Product:</h2>
+          <h2>Товар:</h2>
           <h3>{selectedProduct.title}</h3>
           <p>{selectedProduct.description}</p>
-          <h4>{selectedProduct.price}</h4>
+          <h4>Цена: {selectedProduct.price} руб.</h4>
           {selectedProduct.stock > 0 ? (
             <p>На складе: {selectedProduct.stock}</p>
           ) : (
             <p>Товара нет в продаже</p>
           )}
           <br />
-
-          <span onClick={onAddToCart}>Добавить в корзину</span>
+          {role !== null ? (
+            <span onClick={onAddToCart}>Добавить в корзину</span>
+          ) : (
+            <p>
+              Чтобы иметь возможность заказать товар
+              <Link to={'/login'} style={{ color: 'rgb(89, 56, 115)' }}>
+                войдите в свой аккаунт
+              </Link>
+            </p>
+          )}
         </>
       ) : (
-        <ProductForm categories={categories} initialData={selectedProduct} />
+        <ProductForm
+          categories={categories}
+          initialData={selectedProduct}
+          setIsEditing={setIsEditing}
+        />
       )}
     </div>
   );

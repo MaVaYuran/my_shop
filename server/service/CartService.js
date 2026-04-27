@@ -12,7 +12,7 @@ async function getUserCart(id) {
 
 async function addProductToCart(userId, productId, quantity) {
   try {
-    let cart = await findOne({ user: userId });
+    let cart = await Cart.findOne({ user: userId });
     if (!cart) {
       cart = new Cart({ user: userId });
     }
@@ -20,12 +20,12 @@ async function addProductToCart(userId, productId, quantity) {
     if (!product) {
       throw new Error('Product not found');
     }
-    const actualPrice = product.price;
+
     const existingItem = cart.items.find(item => item.product.toString() === productId.toString());
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
-      cart.items.push({ product: productId, price: actualPrice, quantity });
+      cart.items.push({ product: productId, price: product.price, quantity });
     }
     await cart.save();
     return cart;

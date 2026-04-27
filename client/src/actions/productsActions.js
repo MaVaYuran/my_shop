@@ -95,11 +95,12 @@ export const updateProduct =
   ({ id, data }) =>
   async dispatch => {
     updateProductRequest();
-    console.log('product edit req');
 
     try {
       const response = await request(`/products/${id}/edit`, 'PATCH', { ...data });
-      dispatch(updateProductSuccess(response));
+      console.log('update response:', response.data);
+
+      dispatch(updateProductSuccess(response.data));
     } catch (error) {
       dispatch(updateProductFailure(error.message));
     }

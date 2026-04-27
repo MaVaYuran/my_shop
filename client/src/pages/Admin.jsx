@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCategory } from '../actions/categoryActions';
 import { useState } from 'react';
 import { Input } from '../components/input/Input';
-import ProductForm from './ProductForm';
+import { ProductForm } from './ProductForm';
 import styles from './Admin.module.css';
 
 export const Admin = () => {
