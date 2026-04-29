@@ -26,6 +26,8 @@ async function addToCart(req, res) {
 async function updateCartItem(req, res) {
   try {
     const { productId, quantity } = req.body;
+    console.log('reqbody', req.body);
+
     const cart = await updateItemQuantity(req.user._id, productId, quantity);
     res.status(200).json({ data: cart });
   } catch (error) {
@@ -34,8 +36,8 @@ async function updateCartItem(req, res) {
 }
 async function removeFromCart(req, res) {
   try {
-    await removeProductFromCart(req.user._id, req.body.productId);
-    res.status(204).send();
+    const cart = await removeProductFromCart(req.user._id, req.params.productId);
+    res.status(200).json({ data: cart });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -43,7 +45,7 @@ async function removeFromCart(req, res) {
 async function clearCart(req, res) {
   try {
     const cart = await clearUserCart(req.user._id);
-    res.status(200).json({ data: cart });
+    res.status(200).send();
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

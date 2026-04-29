@@ -56,7 +56,6 @@ export const login = (email, password) => async dispatch => {
     const response = await request('/login', 'POST', { email, password });
 
     localStorage.setItem('token', response.token);
-    console.log('loc Stor token', localStorage.getItem('token'));
 
     dispatch(loginSuccess(response));
     return response;

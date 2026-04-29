@@ -5,6 +5,7 @@ import { fetchProducts } from '../../../actions/productsActions.js';
 import Pagination from '../../../components/pagination/Pagination.jsx';
 import { Input } from '../../../components/input/Input.jsx';
 import { Link } from 'react-router';
+import { ProductCard } from './ProductCard.jsx';
 import styles from './ProductContainer.module.css';
 
 export const ProductsContainer = ({ selectedCategory, currentPage, setCurrentPage }) => {
@@ -41,13 +42,7 @@ export const ProductsContainer = ({ selectedCategory, currentPage, setCurrentPag
       />
       <div className={styles.productsList}>
         {products && products.length > 0 ? (
-          products.map(product => (
-            <Link to={`/products/${product.id}`} key={product.id} className={styles.productCard}>
-              <img className={styles.productImage} alt="product foto" />
-              <h3 className={styles.productTitle}>{product.title}</h3>
-              <div>{product.price} руб.</div>
-            </Link>
-          ))
+          products.map(product => <ProductCard product={product} />)
         ) : (
           <div>Товары не найдены</div>
         )}

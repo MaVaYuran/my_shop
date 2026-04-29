@@ -41,9 +41,9 @@ export const addProductFailure = error => ({
   type: ADD_PRODUCT_FAILURE,
   payload: error,
 });
-export const updateProductRequest = () => ({ type: ADD_PRODUCT_REQUEST });
-export const updateProductSuccess = data => ({ type: ADD_PRODUCT_SUCCESS, payload: data });
-export const updateProductFailure = error => ({ type: ADD_PRODUCT_FAILURE, payload: error });
+export const updateProductRequest = () => ({ type: UPDATE_PRODUCT_REQUEST });
+export const updateProductSuccess = data => ({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+export const updateProductFailure = error => ({ type: UPDATE_PRODUCT_FAILURE, payload: error });
 export const deleteProductRequest = () => ({ type: DELETE_PRODUCT_REQUEST });
 export const deleteProductSuccess = id => ({ type: DELETE_PRODUCT_SUCCESS, payload: id });
 export const deleteProductFailure = error => ({ type: DELETE_PRODUCT_FAILURE, payload: error });
@@ -80,7 +80,7 @@ export const fetchProducts =
   };
 
 export const addProduct = product => async dispatch => {
-  addProductRequest();
+  dispatch(addProductRequest());
 
   try {
     const response = await request('/products/new', 'POST', { ...product });
@@ -94,7 +94,7 @@ export const addProduct = product => async dispatch => {
 export const updateProduct =
   ({ id, data }) =>
   async dispatch => {
-    updateProductRequest();
+    dispatch(updateProductRequest());
 
     try {
       const response = await request(`/products/${id}/edit`, 'PATCH', { ...data });
@@ -107,7 +107,7 @@ export const updateProduct =
   };
 
 export const deleteProduct = id => async dispatch => {
-  deleteProductRequest();
+  dispatch(deleteProductRequest());
   try {
     await request(`/products/${id}`, 'DELETE');
     dispatch(deleteProductSuccess(id));
@@ -117,7 +117,7 @@ export const deleteProduct = id => async dispatch => {
 };
 
 export const getProduct = id => async dispatch => {
-  getProductRequest();
+  dispatch(getProductRequest());
   try {
     const response = await request(`/products/${id}`);
     dispatch(getProductSuccess(response.data));

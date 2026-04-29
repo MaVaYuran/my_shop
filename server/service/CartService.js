@@ -44,10 +44,11 @@ async function updateItemQuantity(userId, productId, quantity) {
     if (!item) {
       throw new Error('Product not found in cart');
     }
-    if (quantity <= 0) {
-      cart.items = cart.items.filter(item => item.product.toString !== productId.toString());
+    const quantityRes = item.quantity + quantity;
+    if (quantityRes <= 0) {
+      cart.items = cart.items.filter(item => item.product.toString() !== productId.toString());
     } else {
-      item.quantity = quantity;
+      item.quantity += quantity;
     }
     await cart.save();
     return cart;
