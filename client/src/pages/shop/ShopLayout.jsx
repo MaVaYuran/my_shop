@@ -70,6 +70,7 @@ export const ShopLayout = () => {
           selectedCategory={selectedCategory}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          userId={authUser ? authUser.id : null}
         />
       </div>
     </>

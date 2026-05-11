@@ -42,14 +42,13 @@ export const cartReducer = (state = initialCartState, { type, payload }) => {
 
     case CART_UPDATE_ITEM_QUANTITY_SUCCESS: {
       const { productId, quantity } = payload;
+      console.log('productQuant', quantity);
+
       const newItems = state.items.map(item =>
         item.product._id === productId ? { ...item, quantity: item.quantity + quantity } : item,
       );
 
-      const newTotalPrice = newItems.reduce(
-        (total, item) => total + item.price * item.quantity,
-        state.totalPrice,
-      );
+      const newTotalPrice = newItems.reduce((total, item) => total + item.price * item.quantity, 0);
       return { ...state, items: newItems, totalPrice: newTotalPrice, loading: false };
     }
 

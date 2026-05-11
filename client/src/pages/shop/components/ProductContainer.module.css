@@ -7,15 +7,14 @@
 .productsList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
   gap: 20px;
   margin: 20px;
 }
 
 .productCard {
-  height: 330px;
-  min-width: 220px;
-
+  height: 370px;
+  width: 220px;
+  position: relative;
   color: #623375;
   padding: 6px 10px;
   border: 1px solid #665;
@@ -33,15 +32,29 @@
 .productImage {
   min-width: 100%;
   min-height: 70%;
+  margin-top: 20px;
   border: 1px solid greenyellow;
 }
 
-/* .productInfo {
+.productInfo {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-} */
+}
 .productTitle {
   display: inline;
   margin-top: 22px;
+}
+
+.picture {
+  z-index: 10;
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+}
+
+.activeFavorite,
+.activeFavorite svg {
+  color: red;
+  fill: red;
 }

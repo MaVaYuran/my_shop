@@ -28,6 +28,7 @@ async function getAllProducts(categoryId = null, search = '', limit = 6, page = 
     throw new Error('Товары не найдены');
   }
 }
+
 async function getProductById(id) {
   try {
     const product = await Product.findById(id);

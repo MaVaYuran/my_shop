@@ -2,6 +2,7 @@ import { Auth, CustomerPage, Cart, Product, Admin, ShopLayout, ProductForm } fro
 
 import roles from '../constants/roles';
 import { wrappedRoutes } from './wrappedRoutes';
+import { Favorite } from '../pages/Favorite';
 
 export const routeConfig = [
   {
@@ -22,6 +23,7 @@ export const routeConfig = [
     roles: [roles.ADMIN, roles.CUSTOMER],
   },
   { path: '/cart', element: <Cart />, roles: [roles.CUSTOMER] },
+  { path: '/favorite', element: <Favorite />, roles: [roles.CUSTOMER] },
 ];
 
 export const buildingRoutes = routeConfig => {

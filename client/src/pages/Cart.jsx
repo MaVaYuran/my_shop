@@ -1,15 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Header } from '../components/header/Header';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchCart, removeProductFromCart, updateItemQuantity } from '../actions/cartActions';
 import { ProductCard } from './shop/components/ProductCard';
-import styles from './Cart.module.css';
 import Pagination from '../components/pagination/Pagination';
 import { HiOutlineTrash } from 'react-icons/hi';
+import styles from './Cart.module.css';
 
 export const Cart = () => {
   const { items, loading, error, totalPrice } = useSelector(state => state.cart);
   const token = localStorage.getItem('token');
+  const [updatingQuantity, setUpdatingQuantity] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -20,7 +21,9 @@ export const Cart = () => {
   }, [dispatch, token]);
 
   const onChangeQuantity = async (id, quantity) => {
+    setUpdatingQuantity(true);
     await dispatch(updateItemQuantity(id, quantity));
+    setUpdatingQuantity(false);
   };
 
   const onItemDelete = async id => {
@@ -40,10 +43,10 @@ export const Cart = () => {
   return (
     <div>
       <Header />
-      <h3>Ваши товары:</h3>
 
       {items.length > 0 ? (
         <>
+          <h3>Ваши товары:</h3>
           <div className={styles.cartProductContainer}>
             {items.map(item => {
               const isAddDisabled = !isIncreaseAllowed(item);
@@ -53,11 +56,17 @@ export const Cart = () => {
 
                   <div className={styles.btnBlock}>
                     <div className={styles.quantity}>
-                      <span onClick={() => onChangeQuantity(item.product._id, -1)}>-</span>
+                      <span
+                        onClick={() => onChangeQuantity(item.product._id, -1)}
+                        className={updatingQuantity ? styles.disabled : ''}
+                        disabled={updatingQuantity}>
+                        -
+                      </span>
                       <span>{item.quantity}</span>
                       <span
                         onClick={() => !isAddDisabled && onChangeQuantity(item.product._id, 1)}
-                        className={isAddDisabled ? styles.disabled : ''}>
+                        className={isAddDisabled || updatingQuantity ? styles.disabled : ''}
+                        disabled={updatingQuantity}>
                         +
                       </span>
                     </div>
