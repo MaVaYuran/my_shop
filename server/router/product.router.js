@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { getAll, getOne, create, edit, remove } from '../controller/ProductController.js';
+import { optionalAuthenticate } from '../middlewares/auth.js';
 
 const router = Router();
 
-router.get('/', getAll);
+router.get('/', optionalAuthenticate, getAll);
 router.get('/:id', getOne);
 router.post('/new', create);
 router.patch('/:id/edit', edit);

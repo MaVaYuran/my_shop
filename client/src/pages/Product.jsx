@@ -6,6 +6,7 @@ import roles from '../constants/roles';
 import { Button } from '../components/button/Button';
 import { ProductForm } from './ProductForm';
 import { Header } from '../components/header/Header';
+import { addToCart } from '../actions/cartActions';
 
 export const Product = () => {
   const { id } = useParams();
@@ -14,6 +15,16 @@ export const Product = () => {
   const { user } = useSelector(state => state.auth);
   const categories = useSelector(state => state.category.categories);
   const [isEditing, setIsEditing] = useState(false);
+  const cartItems = useSelector(state => state.cart.items || []);
+  const isItemInCart = () => {
+    if (!selectedProduct?.id) return false;
+    return cartItems.some(item => {
+      console.log('ID1', item.product._id);
+      console.log('ID2', selectedProduct.id);
+
+      return item.product._id === selectedProduct.id;
+    });
+  };
 
   let role = null;
   if (user !== null) {
@@ -26,9 +37,10 @@ export const Product = () => {
     }
   }, [dispatch, id]);
 
-  const onAddToCart = () => {
-    //TODO
+  const onAddToCart = id => {
+    dispatch(addToCart(id));
   };
+
   if (loading) return <div>Loading product</div>;
   if (error) return <div>Error {error}</div>;
   if (!selectedProduct) return <div>Product not found</div>;
@@ -52,7 +64,13 @@ export const Product = () => {
           )}
           <br />
           {role !== null ? (
-            <span onClick={onAddToCart}>Добавить в корзину</span>
+            isItemInCart() ? (
+              <span>Товар уже в корзине</span>
+            ) : (
+              <span onClick={() => onAddToCart(selectedProduct.id)} style={{ cursor: 'pointer' }}>
+                Добавить в корзину
+              </span>
+            )
           ) : (
             <p>
               Чтобы иметь возможность заказать товар

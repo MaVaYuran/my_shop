@@ -30,6 +30,10 @@ const ProductSchema = Schema(
       type: String,
       default: '',
     },
+    isFavorite: {
+      type: Boolean,
+      default: false,
+    },
     categories: {
       type: Schema.Types.ObjectId,
       ref: 'Category',

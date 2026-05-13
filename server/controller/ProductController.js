@@ -6,18 +6,24 @@ import {
   removeProduct,
 } from '../service/ProductService.js';
 import { mapProduct } from '../utils/productMapper.js';
+import { getFavorites } from './FavoriteController.js';
 
 async function getAll(req, res) {
   try {
     const categoryId = req.query.categoryId || null;
+
     const search = req.query.search || '';
+
     const limit = parseInt(req.query.limit) || 6;
+
     const page = parseInt(req.query.page) || 1;
+    const userId = req.user?.id || null;
 
     if (limit < 1 || page < 1) {
       res.status(400).json({ error: 'Некорректные параметры пагинации' });
     }
-    const searchResult = await getAllProducts(categoryId, search, limit, page);
+    const searchResult = await getAllProducts(categoryId, search, limit, page, userId);
+
     res.status(200).json({
       error: null,
       data: searchResult.products.map(mapProduct),
@@ -27,6 +33,7 @@ async function getAll(req, res) {
     res.status(500).json({ error: e.message });
   }
 }
+
 async function getOne(req, res) {
   try {
     const product = await getProductById(req.params.id);

@@ -7,12 +7,14 @@
 .productsList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 300px);
   gap: 20px;
   margin: 20px;
 }
 
 .productCard {
+  height: 370px;
+  width: 220px;
+  position: relative;
   color: #623375;
   padding: 6px 10px;
   border: 1px solid #665;
@@ -29,11 +31,33 @@
 }
 .productImage {
   min-width: 100%;
-  min-height: 60%;
+  min-height: 70%;
+  margin-top: 20px;
   border: 1px solid greenyellow;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .productTitle {
   display: inline;
-  flex-wrap: wrap;
-  margin-top: 22px;
+  margin-top: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.picture {
+  z-index: 10;
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+}
+
+.activeFavorite,
+.activeFavorite svg {
+  color: red;
+  fill: red;
 }

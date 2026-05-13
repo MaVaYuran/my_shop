@@ -8,5 +8,6 @@ export function mapProduct(product) {
     stock: product.stock,
     categoryId: product.categories?._id || product.categories || null,
     categoryTitle: product.categories?.title || null,
+    isFavorite: product.isFavorite || false,
   };
 }

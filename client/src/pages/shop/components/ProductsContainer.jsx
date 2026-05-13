@@ -2,22 +2,57 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from '../../../hook/useDebounce';
 import { fetchProducts } from '../../../actions/productsActions.js';
+import { HiOutlineHeart } from 'react-icons/hi';
 import Pagination from '../../../components/pagination/Pagination.jsx';
 import { Input } from '../../../components/input/Input.jsx';
 import { Link } from 'react-router';
+import { ProductCard } from './ProductCard.jsx';
 import styles from './ProductContainer.module.css';
+import { addFavorite, fetchFavorite, removeFavorite } from '../../../actions/favoriteActions.js';
 
-export const ProductsContainer = ({ selectedCategory, currentPage, setCurrentPage }) => {
+export const ProductsContainer = ({ selectedCategory, currentPage, setCurrentPage, userId }) => {
   const { products, pagination, loading, error } = useSelector(state => state.products);
+  const favoriteItems = useSelector(state => state.favorite.items);
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(
-      fetchProducts({ categoryId: selectedCategory, search: debouncedSearch, page: currentPage }),
+      fetchProducts({
+        categoryId: selectedCategory,
+        search: debouncedSearch,
+        page: currentPage,
+        userId,
+      }),
     );
-  }, [dispatch, selectedCategory, debouncedSearch, currentPage]);
+    if (userId) dispatch(fetchFavorite(userId));
+  }, [dispatch, selectedCategory, debouncedSearch, currentPage, userId]);
+  console.log('favoriteItems', favoriteItems);
+
+  const toggleFavorite = product => {
+    if (!userId) {
+      alert('Для добавления в избранное необходимо авторизироваться');
+      return;
+    }
+    try {
+      if (product.isFavorite) {
+        dispatch(removeFavorite(userId, product.id));
+      } else {
+        dispatch(addFavorite(userId, product));
+      }
+      dispatch(
+        fetchProducts({
+          categoryId: selectedCategory,
+          search: debouncedSearch,
+          page: currentPage,
+          userId,
+        }),
+      );
+    } catch (error) {
+      console.error('Ошибка при добавлении в избранное', error);
+    }
+  };
 
   const handlePageChange = page => {
     setCurrentPage(page);
@@ -42,11 +77,13 @@ export const ProductsContainer = ({ selectedCategory, currentPage, setCurrentPag
       <div className={styles.productsList}>
         {products && products.length > 0 ? (
           products.map(product => (
-            <Link to={`/products/${product.id}`} key={product.id} className={styles.productCard}>
-              <img className={styles.productImage} alt="product foto" />
-              <h3 className={styles.productTitle}>{product.title}</h3>
-              <div>{product.price} руб.</div>
-            </Link>
+            <ProductCard
+              key={product.id}
+              product={product}
+              isFavorite={product.isFavorite}
+              handdleFavorite={() => toggleFavorite(product)}
+              picture={<HiOutlineHeart />}
+            />
           ))
         ) : (
           <div>Товары не найдены</div>
