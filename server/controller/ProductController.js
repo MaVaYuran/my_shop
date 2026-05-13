@@ -17,12 +17,12 @@ async function getAll(req, res) {
     const limit = parseInt(req.query.limit) || 6;
 
     const page = parseInt(req.query.page) || 1;
+    const userId = req.user?.id || null;
 
     if (limit < 1 || page < 1) {
       res.status(400).json({ error: 'Некорректные параметры пагинации' });
     }
-    const searchResult = await getAllProducts(categoryId, search, limit, page);
-    console.log('searchResult', searchResult);
+    const searchResult = await getAllProducts(categoryId, search, limit, page, userId);
 
     res.status(200).json({
       error: null,

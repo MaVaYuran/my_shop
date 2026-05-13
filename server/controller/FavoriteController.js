@@ -2,16 +2,31 @@ import {
   getFavoritesByUserId,
   addToFavorite,
   removeFromFavorite,
+  getFavoriteProductsByUserId,
 } from '../service/FavoriteService.js';
 
 async function getFavorites(req, res) {
   try {
     const userId = req.params.userId;
     const data = await getFavoritesByUserId(userId);
+    console.log('favoriteDataContr', data);
+
     res.status(200).json({ data });
   } catch (error) {
     console.error('Fetching favorite error', error);
     res.status(500).json({ message: 'Ошибка загрузки избранного' });
+  }
+}
+
+async function getFavoriteProducts(req, res) {
+  try {
+    const userId = req.params.userId;
+    const favoriteProducts = await getFavoriteProductsByUserId(userId);
+    console.log('favooritecontrollerproducts', favoriteProducts);
+    res.status(200).json({ data: favoriteProducts });
+  } catch (error) {
+    console.error('Fetching favorite products error', error);
+    res.status(500).json({ message: 'Ошибка загрузки избранных товаров' });
   }
 }
 
@@ -42,4 +57,4 @@ async function deleteFavoriteItem(req, res) {
   }
 }
 
-export { getFavorites, addFavoriteItem, deleteFavoriteItem };
+export { getFavorites, getFavoriteProducts, addFavoriteItem, deleteFavoriteItem };

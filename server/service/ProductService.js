@@ -1,6 +1,7 @@
 import { Product } from '../model/Product.js';
+import { getFavoritesByUserId } from './FavoriteService.js';
 
-async function getAllProducts(categoryId = null, search = '', limit = 6, page = 1) {
+async function getAllProducts(categoryId = null, search = '', limit = 6, page = 1, userId = null) {
   const query = {};
   if (categoryId) {
     query.categories = categoryId;
@@ -18,8 +19,22 @@ async function getAllProducts(categoryId = null, search = '', limit = 6, page = 
         .populate('categories', 'title'),
       Product.countDocuments(query),
     ]);
+    console.log('userId', userId);
+
+    let favoriteIds = new Set();
+    if (userId) {
+      const favoriteItems = await getFavoritesByUserId(userId);
+      console.log('favoriteItems', favoriteItems);
+
+      favoriteIds = new Set(favoriteItems.map(item => item.productId.toString()));
+    }
+
+    const productsWithFavorites = products.map(product => ({
+      ...product.toObject(),
+      isFavorite: favoriteIds.has(product._id.toString()),
+    }));
     return {
-      products,
+      products: productsWithFavorites,
       pagination: { currentPage: page, lastPage: Math.ceil(totalCount / limit), totalCount },
     };
   } catch (e) {

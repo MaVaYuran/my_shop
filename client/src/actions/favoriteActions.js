@@ -4,6 +4,9 @@ import {
   ADD_FAVORITE_REQUEST,
   ADD_FAVORITE_SUCCESS,
   FETCH_FAVORITE_FAILURE,
+  FETCH_FAVORITE_PRODUCTS_FAILURE,
+  FETCH_FAVORITE_PRODUCTS_REQUEST,
+  FETCH_FAVORITE_PRODUCTS_SUCCESS,
   FETCH_FAVORITE_REQUEST,
   FETCH_FAVORITE_SUCCESS,
   REMOVE_FAVORITE_FAILURE,
@@ -31,6 +34,15 @@ const removeFavoriteFailure = error => ({ type: REMOVE_FAVORITE_FAILURE, payload
 const fetchFavoriteRequest = () => ({ type: FETCH_FAVORITE_REQUEST });
 const fetchFavoriteSuccess = items => ({ type: FETCH_FAVORITE_SUCCESS, payload: items });
 const fetchFavoriteFailure = error => ({ type: FETCH_FAVORITE_FAILURE, payload: error });
+const fetchFavoriteProductsRequest = () => ({ type: FETCH_FAVORITE_PRODUCTS_REQUEST });
+const fetchFavoriteProductsSuccess = items => ({
+  type: FETCH_FAVORITE_PRODUCTS_SUCCESS,
+  payload: items,
+});
+const fetchFavoriteProductsFailure = error => ({
+  type: FETCH_FAVORITE_PRODUCTS_FAILURE,
+  payload: error,
+});
 
 export const addFavorite = (userId, product) => async dispatch => {
   console.log('USERID ', userId);
@@ -55,13 +67,24 @@ export const removeFavorite = (userId, productId) => async dispatch => {
   }
 };
 export const fetchFavorite = userId => async dispatch => {
-  fetchFavoriteRequest();
+  dispatch(fetchFavoriteRequest());
   try {
-    const data = await request(`/favorite/${userId}`);
+    const data = await request(`/favorite/ids/${userId}`);
     console.log('dataAct', data.data);
 
-    dispatch(fetchFavoriteSuccess(data.data || []));
+    dispatch(fetchFavoriteSuccess(data.data));
   } catch (error) {
     dispatch(fetchFavoriteFailure(error.message));
+  }
+};
+export const fetchFavoriteProducts = userId => async dispatch => {
+  dispatch(fetchFavoriteProductsRequest());
+  try {
+    const data = await request(`/favorite/products/${userId}`);
+    console.log('FavoriteproductsActions', data.data);
+
+    dispatch(fetchFavoriteProductsSuccess(data.data));
+  } catch (error) {
+    dispatch(fetchFavoriteProductsFailure(error.message));
   }
 };

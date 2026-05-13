@@ -24,3 +24,37 @@ export async function authenticate(req, res, next) {
     res.status(401).json({ message: e.message });
   }
 }
+
+export async function optionalAuthenticate(req, res, next) {
+  try {
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader) {
+      req.user = null;
+      return next();
+    }
+
+    const token = authHeader.slice('Bearer '.length).trim();
+
+    if (!token) {
+      req.user = null;
+      return next();
+    }
+
+    const verifiedToken = jwt.verify(token, JWT_SECRET);
+
+    const user = await User.findOne({ _id: verifiedToken.id });
+
+    if (!user) {
+      req.user = null;
+      return next;
+    }
+
+    req.user = user;
+    next();
+  } catch (e) {
+    console.warn('Optional authenticate error', e);
+    req.user = null;
+    next();
+  }
+}

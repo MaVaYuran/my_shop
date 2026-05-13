@@ -25,7 +25,6 @@ export const Product = () => {
       return item.product._id === selectedProduct.id;
     });
   };
-  console.log('ProductI', cartItems);
 
   let role = null;
   if (user !== null) {
@@ -68,7 +67,9 @@ export const Product = () => {
             isItemInCart() ? (
               <span>Товар уже в корзине</span>
             ) : (
-              <span onClick={() => onAddToCart(selectedProduct.id)}>Добавить в корзину</span>
+              <span onClick={() => onAddToCart(selectedProduct.id)} style={{ cursor: 'pointer' }}>
+                Добавить в корзину
+              </span>
             )
           ) : (
             <p>

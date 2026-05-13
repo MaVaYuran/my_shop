@@ -52,7 +52,7 @@ export const getProductSuccess = id => ({ type: FETCH_PRODUCT_SUCCESS, payload: 
 export const getProductFailure = error => ({ type: FETCH_PRODUCT_FAILURE, payload: error });
 
 export const fetchProducts =
-  ({ categoryId = null, search = '', page = 1, limit = 6 } = {}) =>
+  ({ categoryId = null, search = '', page = 1, limit = 6, userId = null } = {}) =>
   async dispatch => {
     dispatch(fetchProductsRequest());
     try {
@@ -68,10 +68,14 @@ export const fetchProducts =
 
       params.append('page', page);
       params.append('limit', limit);
+      if (userId) {
+        params.append('userId', userId);
+      }
 
       const url = `/products?${params.toString()}`;
 
       const response = await request(url);
+      console.log('response', response.data);
 
       dispatch(fetchProductsSuccess({ data: response.data, pagination: response.pagination }));
     } catch (error) {
